@@ -1,4 +1,2 @@
 # hello-world
- My first project at GitHub
-
-These changes will only be made to the README file
+This test project was created according to the technical assignment received from Luxoft
