@@ -1,32 +1,35 @@
 #include "stdafx.h"
 #include "Location.h"
 
-Location::Location(char ch, Status st):
-	m_symbol(ch),
-	m_status(st)
+namespace MyTanks
 {
-}
 
-Location::~Location()
-{
-}
+	Location::Location(char ch, Status st) noexcept :
+		m_symbol(ch),
+		m_status(st) {}
 
-char Location::GetSymbol() const
-{
-	return m_symbol;
-}
+	Location::~Location()
+	{
+	}
 
-Location::Status  Location::GetStatus() const
-{
-	return m_status;
-}
+	char Location::GetSymbol() const
+	{
+		return m_symbol;
+	}
 
-void Location::SetSymbol(char ch)
-{
-	m_symbol = ch;
-}
+	Location::Status  Location::GetStatus() const
+	{
+		return m_status;
+	}
 
-void  Location::SetStatus(Status st)
-{
-	m_status = st;
+	void Location::SetSymbol(char ch)
+	{
+		m_symbol = ch;
+	}
+
+	void  Location::SetStatus(Status st)
+	{
+		m_status = st;
+	}
+
 }

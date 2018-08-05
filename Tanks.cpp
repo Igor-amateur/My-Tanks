@@ -3,50 +3,55 @@
 #include"Battlefield.h"
 #include "Shell.h"
 
-const int FIRE(32);//
-
-
-
-
-Tanks::Tanks(Direction dr, Status st, POINT currentPoint, Battlefield * bf) 
-	: Location(DirectionToSymbol((int)dr), st)
+namespace MyTanks
 {
-	m_live = 5;
-	m_TimeOld = 0;
-	m_currentPoint = currentPoint;
-	mp_battlefield = bf;
-}
+	
+
+	const int FIRE(32);//
 
 
-Tanks::~Tanks()
-{
-	m_live = 0;
-}
+	Tanks::Tanks(Direction dr, Status st, POINT currentPoint, Battlefield * bf)
+		: Location(DirectionToSymbol((int)dr), st)
 
-POINT Tanks::GetPoint() const
-{ 
-	return m_currentPoint; 
-}
+	{
+		m_live = 5;
+		m_TimeOld = 0;
+		m_currentPoint = currentPoint;
+		mp_battlefield = bf;
+		m_TimeOldFire = clock();////////
+	}
 
-void Tanks::SetPoint(POINT p)
-{
-	m_currentPoint = p;
-}
 
-void Tanks::SetPoint(int hei, int wid)
-{
-	m_currentPoint.x = wid;
-	m_currentPoint.y = hei;
-}
+	Tanks::~Tanks()
+	{
 
-void Tanks::Move(int & dr)
-{
-	/////////////GETTING STARTED
+		m_live = 0;
+	}
+
+	POINT Tanks::GetPoint() const
+	{
+		return m_currentPoint;
+	}
+
+	void Tanks::SetPoint(POINT p)
+	{
+		m_currentPoint = p;
+	}
+
+	void Tanks::SetPoint(int hei, int wid)
+	{
+		m_currentPoint.x = wid;
+		m_currentPoint.y = hei;
+	}
+
+	void Tanks::Move(int & dr)
+	{
+		/////////////GETTING STARTED
 		if (this->GetSymbol() == DirectionToSymbol(dr))
 		{
 			clock_t time = clock();
 			clock_t timeResult = time - m_TimeOld;
-			
+
 			if (timeResult >= (5 * TIME_PAUSE))
 			{
 				m_TimeOld = time;
@@ -95,78 +100,80 @@ void Tanks::Move(int & dr)
 			}
 			dr = 0;
 		}
-	///////////// END OF MOVEMENT
-}
-
-Tanks::Direction Tanks::GetDirection() const
-{
-	return SymbolToDirection(static_cast<Symbol>(GetSymbol()));
-}
-
-Battlefield * Tanks::GetBattlefield() const
-{
-	return mp_battlefield;
-}
-
-
-char Tanks::DirectionToSymbol(const int direct) const
-{
-	switch ((Direction)direct)
-	{
-	case Direction::Up :
-		return (char)Symbol::mUp;
-	case Direction::Left:
-		return (char)Symbol::mLeft;
-	case Direction::Right:
-		return (char)Symbol::mRight;
-	case Direction::Down:
-		return (char)Symbol::mDown;
-	default:
-		return 0;
-		break;
+		///////////// END OF MOVEMENT
 	}
 
-}
-
-Tanks::Direction Tanks::SymbolToDirection(const Symbol symbol) const
-{
-	switch (symbol)
+	Tanks::Direction Tanks::GetDirection() const
 	{
-	case Symbol::eUp:
-	case Symbol::mUp:
-		return Direction::Up;
-	case Symbol::eDown:
-	case Symbol::mDown:
-		return Direction::Down;
-	case Symbol::eLeft:
-	case Symbol::mLeft:
-		return Direction::Left;
-	case Symbol::eRight:
-	case Symbol::mRight:
-		return Direction::Right;
-	default:
-		return Direction::Direct_Error;
-		break;
+		return SymbolToDirection(static_cast<Symbol>(GetSymbol()));
 	}
-}
 
-bool Tanks::LastLife()
-{
-	mp_battlefield->MinusLive();
-	--m_live;
-	return m_live > 0 ? false: true;
-}
-
-void Tanks::SetStep(int y, int x, int & dr)
-{
-	int newPos_Y = m_currentPoint.y + y;
-	int newPos_X = m_currentPoint.x + x;
-	if (mp_battlefield->GetLocation(newPos_Y, newPos_X) == nullptr)
+	Battlefield * Tanks::GetBattlefield() const
 	{
-		mp_battlefield->SetLocation(newPos_Y, newPos_X, this);
-		mp_battlefield->SetLocation(m_currentPoint.y, m_currentPoint.x, nullptr);
-		m_currentPoint.y = newPos_Y;
-		m_currentPoint.x = newPos_X;
-		dr = 0;
+		return mp_battlefield;
 	}
+
+
+	char Tanks::DirectionToSymbol(const int direct) const
+	{
+		switch ((Direction)direct)
+		{
+		case Direction::Up:
+			return (char)Symbol::mUp;
+		case Direction::Left:
+			return (char)Symbol::mLeft;
+		case Direction::Right:
+			return (char)Symbol::mRight;
+		case Direction::Down:
+			return (char)Symbol::mDown;
+		default:
+			return 0;
+			break;
+		}
+
+	}
+
+	Tanks::Direction Tanks::SymbolToDirection(const Symbol symbol) const
+	{
+		switch (symbol)
+		{
+		case Symbol::eUp:
+		case Symbol::mUp:
+			return Direction::Up;
+		case Symbol::eDown:
+		case Symbol::mDown:
+			return Direction::Down;
+		case Symbol::eLeft:
+		case Symbol::mLeft:
+			return Direction::Left;
+		case Symbol::eRight:
+		case Symbol::mRight:
+			return Direction::Right;
+		default:
+			return Direction::Direct_Error;
+			break;
+		}
+	}
+
+	bool Tanks::LastLife()
+	{
+		mp_battlefield->MinusLive();
+		--m_live;
+		return m_live > 0 ? false : true;
+	}
+
+	void Tanks::SetStep(int y, int x, int & dr)
+	{
+		int newPos_Y = m_currentPoint.y + y;
+		int newPos_X = m_currentPoint.x + x;
+		if (mp_battlefield->GetLocation(newPos_Y, newPos_X) == nullptr)
+		{
+			mp_battlefield->SetLocation(newPos_Y, newPos_X, this);
+			mp_battlefield->SetLocation(m_currentPoint.y, m_currentPoint.x, nullptr);
+			m_currentPoint.y = newPos_Y;
+			m_currentPoint.x = newPos_X;
+			dr = 0;
+		}
+	}
+
 }

@@ -2,33 +2,39 @@
 #include "Flash.h"
 #include"Battlefield.h"
 
-const char FLASH(-2);
-
-Flash::Flash(Direction dr, Status st, POINT currentPoint, Battlefield * bf)
-	:Tanks(dr, st, currentPoint, bf)
+namespace MyTanks
 {
-	if (dr == Direction::Down || dr == Direction::Right)
+
+	const char FLASH(-2);
+
+	Flash::Flash(Direction dr, Status st, POINT currentPoint, Battlefield * bf)
+		:Tanks(dr, st, currentPoint, bf)
+		, m_stopDestroy(false)
 	{
-		m_stopDestroy = true;
-		
+		if (dr == Direction::Down || dr == Direction::Right)
+		{
+			m_stopDestroy = true;
+
+		}
+		this->SetSymbol(FLASH);
 	}
-	this->SetSymbol(FLASH);
-}
 
 
-Flash::~Flash()
-{
-}
+	Flash::~Flash()
+	{
+	}
 
-void Flash::Move(int & dr)
-{
-	if (!m_stopDestroy)
+	void Flash::Move(int & dr)
 	{
-		mp_battlefield->SetLocation(m_currentPoint.y, m_currentPoint.x, nullptr);
-		delete this;
+		if (!m_stopDestroy)
+		{
+			mp_battlefield->SetLocation(m_currentPoint.y, m_currentPoint.x, nullptr);
+			delete this;
+		}
+		else
+		{
+			m_stopDestroy = false;
+		}
 	}
-	else
-	{
-		m_stopDestroy = false;
-	}
+
 }
