@@ -20,7 +20,5 @@
 
 #pragma comment( lib, "Kernel32.lib") 
 
-using std::cout;
-using std::endl;
 
 const clock_t TIME_PAUSE(80L);

@@ -1,13 +1,16 @@
 #pragma once
 #include "Location.h"
-class Wall :
-	public Location
+
+namespace MyTanks
 {
-public:
-	Wall();
-	~Wall()override;
+	class Wall :
+		public Location
+	{
+	public:
+		Wall()noexcept;
+		~Wall()override;
 
-	void Move(int& dr)override {/*do nothing*/}
-	bool LastLife() override { return false; }
-};
-
+		void Move(int& dr)override {/*do nothing*/ }
+		bool LastLife() override { return false; }
+	};
+}
